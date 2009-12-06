@@ -21,3 +21,7 @@ It's also possible to supply a source file on disk and a context name:
 
 Note that to be able to call functions, you'll need to expose them using the CommonJS "exports" declaration.
 
+Todo
+====
+
+Unfortunately, require seems to only load the file once, meaning that currently there can only be one context per file
