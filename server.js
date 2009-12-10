@@ -7,6 +7,7 @@
 
 var sys = require("sys");
 var fu = require("./fu");
+var _ = require("./_")._;
 
 Config = {
   port: "1234",
@@ -58,6 +59,11 @@ fu.get("/eval", function (req, res) {
       result["success"] = true
     }
   } catch(ex) {
+    _((ex.stack || "").split("\n")).each(function(v) {
+      sys.p(v)
+    })
+    
+    //.toString()
     result["exception"] = ex.toString()
   }
   
