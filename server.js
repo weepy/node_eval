@@ -8,6 +8,7 @@
 var sys = require("sys");
 var fu = require("./fu");
 var _ = require("./_")._;
+var url = require("url")
 
 Config = {
   port: "1234",
@@ -44,12 +45,14 @@ fu.listen(Config.port, Config.domain)
 
 fu.get("/eval", function (req, res) {
   var result = { success:false}
-
+		puts(1) 
   try {
-    var params = req.uri.params
+puts(2)
+		var params =  url.parse(req.url, true).query
     var context = getContext(params["name"] || "", params["file"])
     var js = params["js"]
-    
+
+		    
     sys.puts("received JS: " + js) 
     
     with(context) {
@@ -59,13 +62,13 @@ fu.get("/eval", function (req, res) {
       result["success"] = true
     }
   } catch(ex) {
-    _((ex.stack || "").split("\n")).each(function(v) {
-      sys.p(v)
-    })
-    
-    //.toString()
-    result["exception"] = ex.toString()
-  }
+      _((ex.stack || "").split("\n")).each(function(v) {
+        sys.p(v)
+      })
+      puts(ex.toString())
+      //.toString()
+      result["exception"] = ex.toString()
+    }
   
   sys.puts("Returning:" + JSON.stringify(result))
   res.simpleJSON(200, result);

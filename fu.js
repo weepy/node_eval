@@ -1,5 +1,7 @@
 var createServer = require("http").createServer;
 var sys = require("sys");
+
+
 DEBUG = false;
 
 var fu = exports;
@@ -22,8 +24,9 @@ fu.get = function (path, handler) {
 
 var server = createServer(function (req, res) {
   if (req.method === "GET" || req.method === "HEAD") {
-    var handler = getMap[req.uri.path] || notFound;
-
+    var handler = getMap[req.url.path] || notFound;
+		
+		
     res.simpleText = function (code, body) {
       res.sendHeader(code, [ ["Content-Type", "text/plain"]
                            , ["Content-Length", body.length]
