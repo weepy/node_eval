@@ -1,6 +1,6 @@
 var createServer = require("http").createServer;
 var sys = require("sys");
-
+var url = require("url")
 
 DEBUG = false;
 
@@ -24,8 +24,14 @@ fu.get = function (path, handler) {
 
 var server = createServer(function (req, res) {
   if (req.method === "GET" || req.method === "HEAD") {
-    var handler = getMap[req.url.path] || notFound;
+    
 		
+		var u = url.parse(req.url, true)
+		
+		req.query = u.query || {}
+			
+    var handler = getMap[u.pathname] || notFound;
+    
 		
     res.simpleText = function (code, body) {
       res.sendHeader(code, [ ["Content-Type", "text/plain"]
@@ -37,7 +43,7 @@ var server = createServer(function (req, res) {
 
     res.simpleJSON = function (code, obj) {
       var body = JSON.stringify(obj);
-      res.sendHeader(code, [ ["Content-Type", "text/json"]
+      res.sendHeader(code, [ ["Content-Type", "text/plain"]
                            , ["Content-Length", body.length]
                            ]);
       res.sendBody(body);

@@ -7,7 +7,7 @@
 
 var sys = require("sys");
 var fu = require("./fu");
-var _ = require("./_")._;
+
 var url = require("url")
 
 Config = {
@@ -45,9 +45,9 @@ fu.listen(Config.port, Config.domain)
 
 fu.get("/eval", function (req, res) {
   var result = { success:false}
-		puts(1) 
+
   try {
-puts(2)
+
 		var params =  url.parse(req.url, true).query
     var context = getContext(params["name"] || "", params["file"])
     var js = params["js"]
@@ -62,9 +62,9 @@ puts(2)
       result["success"] = true
     }
   } catch(ex) {
-      _((ex.stack || "").split("\n")).each(function(v) {
-        sys.p(v)
-      })
+      var lines = (ex.stack || "").split("\n")
+      for(var i in lines)
+        sys.p(lines[i])
       puts(ex.toString())
       //.toString()
       result["exception"] = ex.toString()
