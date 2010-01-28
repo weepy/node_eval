@@ -65,7 +65,7 @@ fu.get("/eval", function (req, res) {
       var lines = (ex.stack || "").split("\n")
       for(var i in lines)
         sys.p(lines[i])
-      puts(ex.toString())
+      sys.puts(ex.toString())
       //.toString()
       result["exception"] = ex.toString()
     }
